@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
-use App\Jobs\SendOrderCreatedNotification;
+use App\Events\OrderCreated;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -45,7 +45,7 @@ class OrderService
                 $order->orderItems()->create($orderItem);
             }
 
-            SendOrderCreatedNotification::dispatch($order);
+            OrderCreated::dispatch($order);
 
             return $order->load('orderItems.product');
         });
